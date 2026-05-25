@@ -18,7 +18,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.10.6'
+        flutter-version: '3.0.5'
         channel: 'stable'
 
     - name: Install dependencies
@@ -27,14 +27,14 @@ jobs:
     - name: Verify Flutter installation
       run: flutter doctor -v
 
-    - name: Build iOS (no code signing)
-      run: flutter build ios --release --no-codesign
+    - name: Build iOS for simulator
+      run: flutter build ios --simulator --debug
 
     - name: Upload iOS build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ios-build
-        path: build/ios/iphoneos/Runner.app
+        name: ios-simulator-build
+        path: build/ios/iphonesimulator/Runner.app
         retention-days: 7
 
     - name: Build summary
