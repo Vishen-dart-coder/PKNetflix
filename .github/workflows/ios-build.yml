@@ -1,0 +1,46 @@
+name: iOS Build
+
+on:
+  workflow_dispatch:  # Allows manual trigger from GitHub Actions tab
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.x'
+        channel: 'stable'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Verify Flutter installation
+      run: flutter doctor -v
+
+    - name: Build iOS (no code signing)
+      run: flutter build ios --release --no-codesign
+
+    - name: Upload iOS build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-build
+        path: build/ios/iphoneos/Runner.app
+        retention-days: 7
+
+    - name: Build summary
+      run: |
+        echo "### iOS Build Complete ✅" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status**: Success" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter Version**: $(flutter --version | head -n 1)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Artifacts**: Available for download" >> $GITHUB_STEP_SUMMARY
