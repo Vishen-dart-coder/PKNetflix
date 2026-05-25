@@ -30,6 +30,32 @@ jobs:
     - name: Build iOS (release, no codesign)
       run: flutter build ipa --release --no-codesign --export-method development
 
+    - name: Build for iOS Simulator
+      run: flutter build ios --simulator --debug
+
+    - name: Launch iOS Simulator
+      run: |
+        xcrun simctl boot "iPhone 15 Pro" || true
+        sleep 5
+
+    - name: Install and run app on simulator
+      run: |
+        xcrun simctl install booted build/ios/iphonesimulator/Runner.app
+        xcrun simctl launch booted com.example.pknetflix
+        sleep 10
+
+    - name: Take screenshot
+      run: |
+        xcrun simctl io booted screenshot screenshot.png
+        ls -la screenshot.png
+
+    - name: Upload screenshot
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-screenshot
+        path: screenshot.png
+        retention-days: 7
+
     - name: Upload iOS build artifacts
       uses: actions/upload-artifact@v4
       with:
