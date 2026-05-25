@@ -45,8 +45,10 @@ class EntryProvider extends ChangeNotifier {
   }
 
   Future<void> list() async {
-    var result =
-        await ApiClient.database.listDocuments(collectionId: _collectionId);
+    var result = await ApiClient.database.listDocuments(
+      databaseId: ApiClient.databaseId,
+      collectionId: _collectionId,
+    );
 
     _entries = result.documents
         .map((document) => Entry.fromJson(document.data))
@@ -61,8 +63,10 @@ class EntryProvider extends ChangeNotifier {
       return _imageCache[entry.thumbnailImageId]!;
     }
 
-    final result =
-        await ApiClient.storage.getFileView(fileId: entry.thumbnailImageId);
+    final result = await ApiClient.storage.getFileView(
+      bucketId: 'default',
+      fileId: entry.thumbnailImageId,
+    );
 
     _imageCache[entry.thumbnailImageId] = result;
 

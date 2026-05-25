@@ -1,6 +1,9 @@
 import 'package:appwrite/appwrite.dart';
 
 class ApiClient {
+  // Default database ID for Appwrite 14.x+ (update this if using a different database)
+  static const String databaseId = 'default';
+
   Client get _client {
     Client client = Client();
 
@@ -13,7 +16,7 @@ class ApiClient {
   }
 
   static Account get account => Account(_instance._client);
-  static Database get database => Database(_instance._client);
+  static Databases get database => Databases(_instance._client);
   static Storage get storage => Storage(_instance._client);
 
   static final ApiClient _instance = ApiClient._internal();
