@@ -27,14 +27,14 @@ jobs:
     - name: Verify Flutter installation
       run: flutter doctor -v
 
-    - name: Build iOS for simulator
-      run: flutter build ios --simulator --debug
+    - name: Build iOS (release, no codesign)
+      run: flutter build ipa --release --no-codesign --export-method development
 
     - name: Upload iOS build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ios-simulator-build
-        path: build/ios/iphonesimulator/Runner.app
+        name: ios-ipa-build
+        path: build/ios/ipa/*.ipa
         retention-days: 7
 
     - name: Build summary
