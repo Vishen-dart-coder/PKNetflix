@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:pknetflix/screens/watchlist.dart';
 
 import 'package:provider/provider.dart';
