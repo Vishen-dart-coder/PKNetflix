@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:pknetflix/api/client.dart';
@@ -39,9 +40,9 @@ class AccountProvider extends ChangeNotifier {
   Future<void> register(String email, String password, String? name) async {
     try {
       final result = await ApiClient.account.create(
-        userId: 'unique()',
-        email: email, 
-        password: password, 
+        userId: ID.unique(),
+        email: email,
+        password: password,
         name: name
       );
 
@@ -55,7 +56,10 @@ class AccountProvider extends ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     try {
-      final result = await ApiClient.account.createSession(email: email, password: password);
+      final result = await ApiClient.account.createEmailPasswordSession(
+        email: email,
+        password: password,
+      );
       _session = result;
 
       Store.set("session", json.encode(result.toMap()));
